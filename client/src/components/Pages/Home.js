@@ -1,8 +1,7 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Result from "../Result.js";
 import SearchBar from "../SearchBar.js";
-
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon";
 
 const Home = () => {
@@ -11,12 +10,20 @@ const Home = () => {
 
     //je recupère tous mes pokemons de ma bdd avec la méthode get de axios, et je les stock  dans ma list
 
-    axios({
-        méthod: "get",
-        url: `${BASE_URL}`,
-    }).then((res) => {
-        console.log(res.data.results);
-    });
+    useEffect(() => {
+        getAllPokemons();
+    }, []);
+
+    const getAllPokemons = async () => {
+        await axios({
+            méthod: "get",
+            url: `${BASE_URL}`,
+        })
+            .then((res) => {
+                setList(res.data.results);
+            })
+            .catch((err) => console.log("err"));
+    };
 
     return (
         <div>
